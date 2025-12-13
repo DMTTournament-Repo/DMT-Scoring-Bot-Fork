@@ -1125,8 +1125,8 @@ async def log_results(clock: ClockState, game_info: dict):
         return
     
     embed = discord.Embed(title="🏁 HLL Tank Overwatch Match Complete", color=0x800020)
-    embed.add_field(name="🇺🇸 Allies Cap Time", value=f"`{clock.format_time(clock.time_a)}`", inline=True)
-    embed.add_field(name="🇩🇪 Axis Cap Time", value=f"`{clock.format_time(clock.time_b)}`", inline=True)
+    embed.add_field(name="🇺🇸 Allies Control Time", value=f"`{clock.format_time(clock.time_a)}`", inline=True)
+    embed.add_field(name="🇩🇪 Axis Control Time", value=f"`{clock.format_time(clock.time_b)}`", inline=True)
     
     # Winner by time control
     if clock.time_a > clock.time_b:
