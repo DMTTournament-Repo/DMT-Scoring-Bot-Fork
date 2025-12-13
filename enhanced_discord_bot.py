@@ -912,24 +912,24 @@ class TimerControls(discord.ui.View):
         # await interaction.response.defer()
         # await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
 
-        if clock.crcon_client and clock.ingame_messages:
-            await clock.crcon_client.send_message(f"🤖 Auto-switch {status}")
+      #  if clock.crcon_client and clock.ingame_messages:
+        #    await clock.crcon_client.send_message(f"🤖 Auto-switch {status}")
 
    # @discord.ui.button(label="💬 Msgs", style=discord.ButtonStyle.secondary)
-    async def toggle_ingame_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if not user_is_admin(interaction):
-            return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
+   # async def toggle_ingame_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
+      #  if not user_is_admin(interaction):
+          #  return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
 
-        clock = clocks[self.channel_id]
-        clock.ingame_messages = not clock.ingame_messages
+       # clock = clocks[self.channel_id]
+       # clock.ingame_messages = not clock.ingame_messages
 
-        status = "ON" if clock.ingame_messages else "OFF"
+      #  status = "ON" if clock.ingame_messages else "OFF"
 
-        await interaction.response.defer()
-        await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
-        await interaction.followup.send(f"💬 In-game messages: **{status}**", ephemeral=True)
+       # await interaction.response.defer()
+      #  await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
+        # await interaction.followup.send(f"💬 In-game messages: **{status}**", ephemeral=True)
 
-   # @discord.ui.button(label="📊 Stats", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label="📊 Stats", style=discord.ButtonStyle.secondary)
     async def show_stats(self, interaction: discord.Interaction, button: discord.ui.Button):
         clock = clocks[self.channel_id]
         await interaction.response.defer(ephemeral=True)
