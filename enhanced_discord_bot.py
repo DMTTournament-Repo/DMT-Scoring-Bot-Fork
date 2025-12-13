@@ -849,7 +849,7 @@ class StartControls(discord.ui.View):
         else:
             await interaction.edit_original_response(content="✅ Match started (CRCON connection failed)")
 
-    @discord.ui.button(label="🔗 Test CRCON", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label="🔗 Test Connection to CRCON", style=discord.ButtonStyle.secondary)
     async def test_crcon(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer(ephemeral=True)
         
@@ -861,7 +861,7 @@ class StartControls(discord.ui.View):
                 if live_data:
                     game_state = live_data.get('game_state', {})
                     map_info = live_data.get('map_info', {})
-                    embed = discord.Embed(title="🟢 CRCON Test - SUCCESS", color=0x00ff00)
+                    embed = discord.Embed(title="🟢 CRCON Connection Test - SUCCESS", color=0x00ff00)
                     embed.add_field(name="Status", value="✅ Connected", inline=True)
                     
                     # Extract map name
@@ -877,11 +877,11 @@ class StartControls(discord.ui.View):
                     embed.add_field(name="Map", value=map_name, inline=True)
                     embed.add_field(name="Players", value=f"{game_state.get('nb_players', 0)}/100", inline=True)
                 else:
-                    embed = discord.Embed(title="🟡 CRCON Test - PARTIAL", color=0xffaa00)
+                    embed = discord.Embed(title="🟡 CRCON Connection Test - PARTIAL", color=0xffaa00)
                     embed.add_field(name="Status", value="Connected but no data", inline=False)
                     
         except Exception as e:
-            embed = discord.Embed(title="🔴 CRCON Test - FAILED", color=0xff0000)
+            embed = discord.Embed(title="🔴 CRCON Connection Test - FAILED | Log into CRCON to establish the connection", color=0xff0000)
             embed.add_field(name="Error", value=str(e)[:1000], inline=False)
         
         await interaction.followup.send(embed=embed, ephemeral=True)
