@@ -810,7 +810,7 @@ class StartControls(discord.ui.View):
         super().__init__(timeout=None)
         self.channel_id = channel_id
 
-    @discord.ui.button(label="▶️ Start Match", style=discord.ButtonStyle.success)
+    @discord.ui.button(label="▶️ Start Scorekeeper", style=discord.ButtonStyle.success)
     async def start_match(self, interaction: discord.Interaction, button: discord.ui.Button):
         if not user_is_admin(interaction):
             return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
@@ -891,31 +891,31 @@ class TimerControls(discord.ui.View):
         super().__init__(timeout=None)
         self.channel_id = channel_id
 
-    @discord.ui.button(label="Allies", style=discord.ButtonStyle.success, emoji="🇺🇸")
-    async def switch_to_a(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await self._switch_team(interaction, "A")
+    # @discord.ui.button(label="Allies", style=discord.ButtonStyle.success, emoji="🇺🇸")
+    # async def switch_to_a(self, interaction: discord.Interaction, button: discord.ui.Button):
+       # await self._switch_team(interaction, "A")
 
-    @discord.ui.button(label="Axis", style=discord.ButtonStyle.secondary, emoji="🇩🇪")
-    async def switch_to_b(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await self._switch_team(interaction, "B")
+    # @discord.ui.button(label="Axis", style=discord.ButtonStyle.secondary, emoji="🇩🇪")
+    # async def switch_to_b(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # await self._switch_team(interaction, "B")
 
     @discord.ui.button(label="🤖 Auto", style=discord.ButtonStyle.secondary)
-    async def toggle_auto_switch(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if not user_is_admin(interaction):
-            return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
+    # async def toggle_auto_switch(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # if not user_is_admin(interaction):
+           #  return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
 
-        clock = clocks[self.channel_id]
-        clock.auto_switch = not clock.auto_switch
+       # clock = clocks[self.channel_id]
+       # clock.auto_switch = not clock.auto_switch
 
-        status = "enabled" if clock.auto_switch else "disabled"
+        # status = "enabled" if clock.auto_switch else "disabled"
 
-        await interaction.response.defer()
-        await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
+        # await interaction.response.defer()
+        # await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
 
         if clock.crcon_client and clock.ingame_messages:
             await clock.crcon_client.send_message(f"🤖 Auto-switch {status}")
 
-    @discord.ui.button(label="💬 Msgs", style=discord.ButtonStyle.secondary)
+   # @discord.ui.button(label="💬 Msgs", style=discord.ButtonStyle.secondary)
     async def toggle_ingame_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
         if not user_is_admin(interaction):
             return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
@@ -929,7 +929,7 @@ class TimerControls(discord.ui.View):
         await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
         await interaction.followup.send(f"💬 In-game messages: **{status}**", ephemeral=True)
 
-    @discord.ui.button(label="📊 Stats", style=discord.ButtonStyle.secondary)
+   # @discord.ui.button(label="📊 Stats", style=discord.ButtonStyle.secondary)
     async def show_stats(self, interaction: discord.Interaction, button: discord.ui.Button):
         clock = clocks[self.channel_id]
         await interaction.response.defer(ephemeral=True)
@@ -966,7 +966,7 @@ class TimerControls(discord.ui.View):
         except Exception as e:
             await interaction.followup.send(f"❌ Error: {str(e)}", ephemeral=True)
 
-    @discord.ui.button(label="↺ Reset", style=discord.ButtonStyle.primary)
+   # @discord.ui.button(label="↺ Reset", style=discord.ButtonStyle.primary)
     async def reset_timer(self, interaction: discord.Interaction, button: discord.ui.Button):
         if not user_is_admin(interaction):
             return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
@@ -984,7 +984,7 @@ class TimerControls(discord.ui.View):
         await interaction.followup.send(embed=embed, view=view)
         clock.message = await interaction.original_response()
 
-    @discord.ui.button(label="⏹️ Stop", style=discord.ButtonStyle.danger)
+    @discord.ui.button(label="⏹️ Manually Stop", style=discord.ButtonStyle.danger)
     async def stop_timer(self, interaction: discord.Interaction, button: discord.ui.Button):
         if not user_is_admin(interaction):
             return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
