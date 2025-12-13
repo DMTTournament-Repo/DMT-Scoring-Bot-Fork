@@ -743,8 +743,8 @@ def build_embed(clock: ClockState):
     axis_status = clock.get_live_status('B')
     
     # Build team information focused on TIME CONTROL
-    allies_value = f"**Cap Time:** `{clock.format_time(allies_status['total_time'])}`\n**Status:** {allies_status['status']}"
-    axis_value = f"**Cap Time:** `{clock.format_time(axis_status['total_time'])}`\n**Status:** {axis_status['status']}"
+    allies_value = f"**Control Time:** `{clock.format_time(allies_status['total_time'])}`\n**Status:** {allies_status['status']}"
+    axis_value = f"**Control Time:** `{clock.format_time(axis_status['total_time'])}`\n**Status:** {axis_status['status']}"
     
     # Add current session info for active team
     if allies_status['is_active'] and allies_status['current_session'] > 0:
