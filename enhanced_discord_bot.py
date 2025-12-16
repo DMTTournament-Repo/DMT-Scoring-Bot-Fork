@@ -842,7 +842,7 @@ class StartControls(discord.ui.View):
             if clock.ingame_messages:
                 team_a = clock.team_names['allied']
                 team_b = clock.team_names['axis']
-                start_msg = f"🏆 HLL Tank Overwatch: {team_a} vs {team_b}\nDMT Scoring Active\nCombat + Cap Time = Total Score"
+                start_msg = f"🏆 DMT Score Keeper is Active"
                 await clock.crcon_client.send_message(start_msg)
 
             await interaction.edit_original_response(content="✅ Match started with CRCON!")
@@ -1110,7 +1110,7 @@ class TimerControls(discord.ui.View):
             team_a_name = clock.team_names['allied']
             team_b_name = clock.team_names['axis']
 
-            msg = f"⚔️ {team_name} captured the point! | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+            msg = f"{team_name} captured the point!\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
             await clock.crcon_client.send_message(msg)
 
         await interaction.response.defer()
