@@ -436,7 +436,7 @@ class ClockState:
             team_a_name = self.team_names['allied']
             team_b_name = self.team_names['axis']
 
-            msg = f"🔄 {team_name} captured the point! | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+            msg = f"🔄 {team_name} captured the point!\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
             await self.crcon_client.send_message(msg)
         
         # IMPORTANT: Update the Discord embed immediately
@@ -772,10 +772,10 @@ def build_embed(clock: ClockState):
     axis_scores = clock.calculate_dmt_score('axis')
 
     # Show DMT scores
-    dmt_allied = f"**TOTAL SCORE: {allied_scores['total_dmt']:,.1f}**\n"
+    dmt_allied = f"**Total Score: {allied_scores['total_dmt']:,.1f}**\n"
     dmt_allied += f"Combat: {allied_scores['combat_total']:,.0f} | Cap: {allied_scores['cap_score']:,.1f}"
 
-    dmt_axis = f"**TOTAL SCORE: {axis_scores['total_dmt']:,.1f}**\n"
+    dmt_axis = f"**Total Score: {axis_scores['total_dmt']:,.1f}**\n"
     dmt_axis += f"Combat: {axis_scores['combat_total']:,.0f} | Cap: {axis_scores['cap_score']:,.1f}"
 
     embed.add_field(name=f"🏆 {allied_name}", value=dmt_allied, inline=True)
@@ -842,7 +842,7 @@ class StartControls(discord.ui.View):
             if clock.ingame_messages:
                 team_a = clock.team_names['allied']
                 team_b = clock.team_names['axis']
-                start_msg = f"🏆 HLL Tank Overwatch: {team_a} vs {team_b} | DMT Scoring Active | Combat + Cap Time = Total Score"
+                start_msg = f"🏆 HLL Tank Overwatch: {team_a} vs {team_b}\nDMT Scoring Active\nCombat + Cap Time = Total Score"
                 await clock.crcon_client.send_message(start_msg)
 
             await interaction.edit_original_response(content="✅ Match started with CRCON!")
@@ -1018,7 +1018,7 @@ class TimerControls(discord.ui.View):
                 winner_msg = "DRAW!"
 
             await clock.crcon_client.send_message(
-                f"🏁 MATCH COMPLETE! {winner_msg} | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+                f"🏁 MATCH COMPLETE! \n {winner_msg}\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
             )
 
         # Create final embed with DMT scores
@@ -1027,7 +1027,7 @@ class TimerControls(discord.ui.View):
         team_a_name = clock.team_names['allied']
         team_b_name = clock.team_names['axis']
 
-        embed = discord.Embed(title="🏁 Match Complete - DMT Results!", color=0xFFD700)
+        embed = discord.Embed(title="🏁 Match Complete - Results!", color=0xFFD700)
 
         game_info = clock.get_game_info()
         if game_info['connection_status'] == 'Connected':
@@ -1037,12 +1037,12 @@ class TimerControls(discord.ui.View):
         # Final DMT scores
         embed.add_field(
             name=f"🇺🇸 {team_a_name}",
-            value=f"**TOTAL SCORE: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
+            value=f"**Total Score: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
             inline=True
         )
         embed.add_field(
             name=f"🇩🇪 {team_b_name}",
-            value=f"**TOTAL SCORE: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
+            value=f"**Total Score: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
             inline=True
         )
 
@@ -1225,7 +1225,7 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
                 winner_msg = "DRAW!"
 
             await clock.crcon_client.send_message(
-                f"🏁 MATCH COMPLETE! {winner_msg} | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+                f"🏁 MATCH COMPLETE! {winner_msg}\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
             )
 
         # Create final embed with DMT scores
