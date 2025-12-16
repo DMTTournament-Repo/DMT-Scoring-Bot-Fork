@@ -772,14 +772,14 @@ def build_embed(clock: ClockState):
     axis_scores = clock.calculate_dmt_score('axis')
 
     # Show DMT scores
-    dmt_allied = f"**DMT Score: {allied_scores['total_dmt']:,.1f}**\n"
+    dmt_allied = f"**TOTAL SCORE: {allied_scores['total_dmt']:,.1f}**\n"
     dmt_allied += f"Combat: {allied_scores['combat_total']:,.0f} | Cap: {allied_scores['cap_score']:,.1f}"
 
-    dmt_axis = f"**DMT Score: {axis_scores['total_dmt']:,.1f}**\n"
+    dmt_axis = f"**TOTAL SCORE: {axis_scores['total_dmt']:,.1f}**\n"
     dmt_axis += f"Combat: {axis_scores['combat_total']:,.0f} | Cap: {axis_scores['cap_score']:,.1f}"
 
-    embed.add_field(name=f"🏆 {allied_name} Total Score", value=dmt_allied, inline=True)
-    embed.add_field(name=f"🏆 {axis_name} Total Score", value=dmt_axis, inline=True)
+    embed.add_field(name=f"🏆 {allied_name}", value=dmt_allied, inline=True)
+    embed.add_field(name=f"🏆 {axis_name}", value=dmt_axis, inline=True)
 
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
@@ -1036,12 +1036,12 @@ class TimerControls(discord.ui.View):
 
         # Final DMT scores
         embed.add_field(
-            name=f"🇺🇸 {team_a_name} - Final DMT",
+            name=f"🇺🇸 {team_a_name}",
             value=f"**TOTAL SCORE: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
             inline=True
         )
         embed.add_field(
-            name=f"🇩🇪 {team_b_name} - Final DMT",
+            name=f"🇩🇪 {team_b_name}",
             value=f"**TOTAL SCORE: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
             inline=True
         )
