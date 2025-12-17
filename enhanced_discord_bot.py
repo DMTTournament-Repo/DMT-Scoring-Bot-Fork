@@ -1744,7 +1744,7 @@ async def on_ready():
     try:
         synced = await bot.tree.sync()
         logger.info(f"✅ Synced {len(synced)} slash commands")
-        print(f"🎉 HLL Tank Overwatch Clock ready! Use /reverse_clock to start")
+        print(f"🎉 DMT Score Keeper bot is ready! Use /reverse_clock to start")
     except Exception as e:
         logger.error(f"❌ Command sync failed: {e}")
 
