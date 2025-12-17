@@ -1290,7 +1290,7 @@ async def reverse_clock(interaction: discord.Interaction):
     embed = build_embed(clocks[channel_id])
     view = StartControls(channel_id)
 
-    await interaction.response.send_message("✅ HLL Tank Overwatch clock ready!", ephemeral=True)
+    await interaction.response.send_message("✅ DMT Score Keeper bot is ready!", ephemeral=True)
     posted_message = await interaction.channel.send(embed=embed, view=view)
     clocks[channel_id].message = posted_message
 
