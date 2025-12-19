@@ -1011,14 +1011,14 @@ class TimerControls(discord.ui.View):
             team_b_name = clock.team_names['axis']
 
             if allied_scores['total_dmt'] > axis_scores['total_dmt']:
-                winner_msg = f"{team_a_name} WINS!"
+                winner_msg = f"WINNER: {team_a_name}"
             elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
-                winner_msg = f"{team_b_name} WINS!"
+                winner_msg = f"WINNER: {team_b_name}"
             else:
                 winner_msg = "DRAW!"
 
             await clock.crcon_client.send_message(
-                f"MATCH COMPLETE!\n-----\n{winner_msg}\n-----\n{team_a_name}: CS {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f}\n{team_b_name}: CS {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f}\n\n{winner_msg}"
+                f"MATCH COMPLETE!\n-----\n{winner_msg}\n-----\n{team_a_name}: CS {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f}\n{team_b_name}: CS {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f}"
             )
 
         # Create final embed with DMT scores
@@ -1218,9 +1218,9 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
             team_b_name = clock.team_names['axis']
 
             if allied_scores['total_dmt'] > axis_scores['total_dmt']:
-                winner_msg = f"{team_a_name} WINS!"
+                winner_msg = f"WINNER: {team_a_name}"
             elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
-                winner_msg = f"{team_b_name} WINS!"
+                winner_msg = f"WINNER: {team_b_name}"
             else:
                 winner_msg = "DRAW!"
 
