@@ -1038,6 +1038,8 @@ class TimerControls(discord.ui.View):
             embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
             embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
 
+        embed.add_field(name=f"------", value="", inline=False)
+        
         # Final DMT scores
         embed.add_field(
             name=f"🇺🇸 {team_a_name}",
@@ -1247,6 +1249,8 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
             embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
             embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
 
+        embed.add_field(name=f"------", value="", inline=False)
+        
         # Final DMT scores
         embed.add_field(
             name=f"🇺🇸 {team_a_name}",
