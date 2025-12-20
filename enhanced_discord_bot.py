@@ -756,9 +756,9 @@ def build_embed(clock: ClockState):
     # Add time advantage calculation
     time_diff = abs(allies_status['total_time'] - axis_status['total_time'])
     if allies_status['total_time'] > axis_status['total_time']:
-        allies_value += f"\n**Advantage:** `+{clock.format_time(time_diff)}`"
+        allies_value += f"\n**Cap Time Advantage:** `+{clock.format_time(time_diff)}`"
     elif axis_status['total_time'] > allies_status['total_time']:
-        axis_value += f"\n**Advantage:** `+{clock.format_time(time_diff)}`"
+        axis_value += f"\n**Cap Time Advantage:** `+{clock.format_time(time_diff)}`"
     
     # Get team names
     allied_name = clock.team_names.get('allied', 'Allies')
@@ -1058,9 +1058,9 @@ class TimerControls(discord.ui.View):
             dmt_diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
             winner = f"**{team_b_name}**\n*+{dmt_diff:,.1f} point advantage*"
         else:
-            winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
+            winner = "🤝 **Perfect Draw**\n*Equal Scores*"
 
-        embed.add_field(name="🏆 Winner:", value=winner, inline=False)
+        embed.add_field(name="🏆 Winner:", value=winner, inline=True)
         embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
 
         await interaction.response.defer()
@@ -1260,14 +1260,14 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
         # Determine winner by DMT score
         if allied_scores['total_dmt'] > axis_scores['total_dmt']:
             dmt_diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-            winner = f"🏆 **{team_a_name} Victory**\n*+{dmt_diff:,.1f} DMT advantage*"
+            winner = f"**{team_a_name}**\n*+{dmt_diff:,.1f} point advantage*"
         elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
             dmt_diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-            winner = f"🏆 **{team_b_name} Victory**\n*+{dmt_diff:,.1f} DMT advantage*"
+            winner = f"**{team_b_name}**\n*+{dmt_diff:,.1f} point advantage*"
         else:
-            winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
+            winner = "🤝 **Perfect Draw**\n*Equal Scores*"
 
-        embed.add_field(name="🎯 Winner", value=winner, inline=False)
+        embed.add_field(name="🏆 Winner:", value=winner, inline=True)
         embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
 
         # Update the message with final results
@@ -1648,7 +1648,7 @@ async def dmt_scores(interaction: discord.Interaction):
     else:
         winner = "⚖️ **Tied**"
 
-    embed.add_field(name="Current Leader", value=winner, inline=False)
+    embed.add_field(name="Current Leader:", value=winner, inline=True)
 
     await interaction.followup.send(embed=embed)
 
