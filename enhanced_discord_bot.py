@@ -737,7 +737,7 @@ def build_embed(clock: ClockState):
 
     # Add server game time instead of match duration
     if game_info['game_time'] > 0:
-        embed.description += f"\n⏰ **Server Game Time:** `{clock.format_time(game_info['game_time'])}`"
+        embed.description += f"\n⏰ **Game Clock:** `{clock.format_time(game_info['game_time'])}`"
     
     # Get live status for both teams
     allies_status = clock.get_live_status('A')
@@ -788,10 +788,10 @@ def build_embed(clock: ClockState):
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
         diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-        leader_text = f"**{allied_name}** leads by {diff:,.1f} points"
+        leader_text = f"**{allied_name}:** {diff:,.1f} point lead"
     elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
         diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-        leader_text = f"**{axis_name}** leads by {diff:,.1f} points"
+        leader_text = f"**{axis_name}:** {diff:,.1f} point lead"
     else:
         leader_text = "⚖️ **Tied**"
 
@@ -1133,9 +1133,24 @@ async def log_results(clock: ClockState, game_info: dict):
     if not results_channel:
         return
     
-    embed = discord.Embed(title="🏁 HLL Tank Overwatch Match Complete", color=0x800020)
-    embed.add_field(name="🇺🇸 Allies Control Time", value=f"`{clock.format_time(clock.time_a)}`", inline=True)
-    embed.add_field(name="🇩🇪 Axis Control Time", value=f"`{clock.format_time(clock.time_b)}`", inline=True)
+    embed = discord.Embed(title="🏁 DMT Score Keeper Match Resulte", color=0x800020)
+    embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
+    embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
+    embed.add_field(name=f"------", value="", inline=False)
+    embed.add_field(
+            name=f"🇺🇸 {team_a_name}",
+            value=f"**Total Score: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
+            inline=True
+        )
+        embed.add_field(
+            name=f"🇩🇪 {team_b_name}",
+            value=f"**Total Score: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
+            inline=True
+        )
+    embed.add_field(name=f"------", value="", inline=False)
+    embed.add_field(name="🏆 Winner:", value=winner, inline=False)
+    embed.add_field(name=f"------", value="", inline=False)
+    embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
     
     # Winner by time control
     if clock.time_a > clock.time_b:
@@ -1649,10 +1664,10 @@ async def dmt_scores(interaction: discord.Interaction):
     # Winner
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
         diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-        winner = f"**{allied_name}** leads by {diff:,.1f} points"
+        winner = f"**{allied_name}:** {diff:,.1f} point lead"
     elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
         diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-        winner = f"**{axis_name}** leads by {diff:,.1f} points"
+        winner = f"**{axis_name}:** {diff:,.1f} point lead"
     else:
         winner = "⚖️ **Tied**"
 
