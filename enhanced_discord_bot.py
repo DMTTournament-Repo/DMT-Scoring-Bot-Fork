@@ -764,7 +764,7 @@ def build_embed(clock: ClockState):
     allied_name = clock.team_names.get('allied', 'Allies')
     axis_name = clock.team_names.get('axis', 'Axis')
 
-    embed.add_field(name=f"🇺🇸 {allied_name}", value=allies_value, inline=False)
+    embed.add_field(name=f"\n🇺🇸 {allied_name}", value=allies_value, inline=False)
     embed.add_field(name=f"🇩🇪 {axis_name}", value=axis_value, inline=False)
 
     # Calculate and show DMT scores
@@ -778,8 +778,8 @@ def build_embed(clock: ClockState):
     dmt_axis = f"**Total Score: {axis_scores['total_dmt']:,.1f}**\n"
     dmt_axis += f"Combat: {axis_scores['combat_total']:,.0f} | Cap: {axis_scores['cap_score']:,.1f}"
 
-    embed.add_field(name=f"🏆 {allied_name}", value=dmt_allied, inline=True)
-    embed.add_field(name=f"🏆 {axis_name}", value=dmt_axis, inline=True)
+    embed.add_field(name=f"/n🇺🇸 {allied_name}", value=dmt_allied, inline=True)
+    embed.add_field(name=f"🇩🇪 {axis_name}", value=dmt_axis, inline=True)
 
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
@@ -882,7 +882,7 @@ class StartControls(discord.ui.View):
                     
         except Exception as e:
             embed = discord.Embed(title="🔴 CRCON Test Connection - FAILED", color=0xff0000)
-            embed.add_field(name="Error. Login into your CRCON account to establish the connection", value=str(e)[:1000], inline=False)
+            embed.add_field(name="ERROR. Login into your CRCON account to establish the connection", value=str(e)[:1000], inline=False)
         
         await interaction.followup.send(embed=embed, ephemeral=True)
 
