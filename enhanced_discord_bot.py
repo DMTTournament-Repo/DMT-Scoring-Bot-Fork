@@ -1137,16 +1137,8 @@ async def log_results(clock: ClockState, game_info: dict):
     embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
     embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
     embed.add_field(name=f"------", value="", inline=False)
-    embed.add_field(
-            name=f"🇺🇸 {team_a_name}",
-            value=f"**Total Score: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
-            inline=True
-        )
-        embed.add_field(
-            name=f"🇩🇪 {team_b_name}",
-            value=f"**Total Score: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
-            inline=True
-        )
+    embed.add_field(name=f"🇺🇸 {team_a_name}", value=f"**Total Score: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})", inline=True)
+    embed.add_field(name=f"🇩🇪 {team_b_name}", value=f"**Total Score: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})", inline=True)
     embed.add_field(name=f"------", value="", inline=False)
     embed.add_field(name="🏆 Winner:", value=winner, inline=False)
     embed.add_field(name=f"------", value="", inline=False)
