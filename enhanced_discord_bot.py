@@ -1060,7 +1060,9 @@ class TimerControls(discord.ui.View):
         else:
             winner = "🤝 **Perfect Draw**\n*Equal Scores*"
 
-        embed.add_field(name="🏆 Winner:", value=winner, inline=True)
+        embed.add_field(name=f"------", value="", inline=False)
+        embed.add_field(name="🏆 Winner:", value=winner, inline=False)
+        embed.add_field(name=f"------", value="", inline=False)
         embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
 
         await interaction.response.defer()
@@ -1267,7 +1269,9 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
         else:
             winner = "🤝 **Perfect Draw**\n*Equal Scores*"
 
+        embed.add_field(name=f"------", value="", inline=False)
         embed.add_field(name="🏆 Winner:", value=winner, inline=True)
+        embed.add_field(name=f"------", value="", inline=False)
         embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
 
         # Update the message with final results
