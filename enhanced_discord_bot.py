@@ -788,14 +788,14 @@ def build_embed(clock: ClockState):
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
         diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-        leader_text = f"🏆 **{allied_name}** leads by {diff:,.1f} points"
+        leader_text = f"**{allied_name}** leads by {diff:,.1f} points"
     elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
         diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-        leader_text = f"🏆 **{axis_name}** leads by {diff:,.1f} points"
+        leader_text = f"**{axis_name}** leads by {diff:,.1f} points"
     else:
         leader_text = "⚖️ **Tied**"
 
-    embed.add_field(name="📊 Current Leader", value=leader_text, inline=False)
+    embed.add_field(name="📊 Current Leader:", value=leader_text, inline=False)
     
     # Footer with connection status
     connection_status = f"🟢 CRCON Connected" if clock.crcon_client else "🔴 CRCON Disconnected"
@@ -1053,10 +1053,10 @@ class TimerControls(discord.ui.View):
         # Determine winner by DMT score
         if allied_scores['total_dmt'] > axis_scores['total_dmt']:
             dmt_diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-            winner = f"**{team_a_name}**\n*+{dmt_diff:,.1f} point advantage*"
+            winner = f"**{team_a_name}**\n*by {dmt_diff:,.1f} points*"
         elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
             dmt_diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-            winner = f"**{team_b_name}**\n*+{dmt_diff:,.1f} point advantage*"
+            winner = f"**{team_b_name}**\n*by {dmt_diff:,.1f} points*"
         else:
             winner = "🤝 **Perfect Draw**\n*Equal Scores*"
 
@@ -1645,14 +1645,14 @@ async def dmt_scores(interaction: discord.Interaction):
     # Winner
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
         diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-        winner = f"🏆 **{allied_name}** leads by {diff:,.1f} points"
+        winner = f"**{allied_name}** leads by {diff:,.1f} points"
     elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
         diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-        winner = f"🏆 **{axis_name}** leads by {diff:,.1f} points"
+        winner = f"**{axis_name}** leads by {diff:,.1f} points"
     else:
         winner = "⚖️ **Tied**"
 
-    embed.add_field(name="Current Leader:", value=winner, inline=True)
+    embed.add_field(name="📊 Current Leader:", value=winner, inline=True)
 
     await interaction.followup.send(embed=embed)
 
