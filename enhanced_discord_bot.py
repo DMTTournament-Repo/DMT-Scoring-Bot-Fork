@@ -766,8 +766,8 @@ def build_embed(clock: ClockState):
 
     embed.add_field(name=f"------", value="", inline=False)
     embed.add_field(name=f"__CAP TIME__", value="", inline=False)
-    embed.add_field(name=f"🇺🇸 {allied_name}", value=allies_value, inline=False)
-    embed.add_field(name=f"🇩🇪 {axis_name}", value=axis_value, inline=False)
+    embed.add_field(name=f"🇺🇸 {allied_name}", value=allies_value, inline=True)
+    embed.add_field(name=f"🇩🇪 {axis_name}", value=axis_value, inline=True)
 
     # Calculate and show DMT scores
     allied_scores = clock.calculate_dmt_score('allied')
