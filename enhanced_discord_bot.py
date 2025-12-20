@@ -764,7 +764,7 @@ def build_embed(clock: ClockState):
     allied_name = clock.team_names.get('allied', 'Allies')
     axis_name = clock.team_names.get('axis', 'Axis')
 
-    embed.add_field(name=f"CURRENT SCORE", inline=false)
+    embed.add_field(name=f"CURRENT SCORE", value="", inline=False)
     embed.add_field(name=f"🇺🇸 {allied_name}", value=allies_value, inline=False)
     embed.add_field(name=f"🇩🇪 {axis_name}", value=axis_value, inline=False)
 
