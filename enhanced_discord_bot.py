@@ -48,8 +48,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 clocks = {}
 # Parse LOG_CHANNEL_ID safely
-log_channel_str = os.getenv('LOG_CHANNEL_ID', '0')
-LOG_CHANNEL_ID = int(log_channel_str) if log_channel_str.isdigit() else 0
+LOG_CHANNEL_ID = int(os.getenv('LOG_CHANNEL_ID', '0')) if os.getenv('LOG_CHANNEL_ID', '0').isdigit() else 0
 
 class APIKeyCRCONClient:
     """CRCON client using API key authentication"""
