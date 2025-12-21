@@ -39,7 +39,7 @@ load_dotenv()
 DEFAULT_MATCH_DURATION = 4500  # 1h 15m in seconds
 GAME_END_THRESHOLD = 5  # Stop match when server time is below this
 MESSAGE_TRUNCATE_LENGTH = 1900  # Max length for test messages
-MIN_UPDATE_INTERVAL = 5  # Minimum seconds between updates
+MIN_UPDATE_INTERVAL = 10  # Minimum seconds between updates
 MAX_UPDATE_INTERVAL = 300  # Maximum seconds between updates
 
 intents = discord.Intents.default()
@@ -232,7 +232,7 @@ class ClockState:
         # DMT Scoring (always enabled)
         self.tournament_mode = True  # Always use DMT scoring
         self.team_names = {'allied': 'Allies', 'axis': 'Axis'}
-        self.ingame_messages = True  # Toggle for sending messages to players in-game
+        self.ingame_messages = False  # Toggle for sending messages to players in-game
         # Squad mapping: which squads represent which crews
         self.squad_config = {
             'allied': {
