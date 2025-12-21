@@ -1272,10 +1272,10 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
         # Determine winner by DMT score
         if allied_scores['total_dmt'] > axis_scores['total_dmt']:
             dmt_diff = allied_scores['total_dmt'] - axis_scores['total_dmt']
-            winner = f"**{team_a_name}**\n*+{dmt_diff:,.1f} point advantage*"
+            winner = f"**{team_a_name}**\n*by {dmt_diff:,.1f} points*"
         elif axis_scores['total_dmt'] > allied_scores['total_dmt']:
             dmt_diff = axis_scores['total_dmt'] - allied_scores['total_dmt']
-            winner = f"**{team_b_name}**\n*+{dmt_diff:,.1f} point advantage*"
+            winner = f"**{team_b_name}**\n*by {dmt_diff:,.1f} points*"
         else:
             winner = "🤝 **Perfect Draw**\n*Equal Scores*"
 
