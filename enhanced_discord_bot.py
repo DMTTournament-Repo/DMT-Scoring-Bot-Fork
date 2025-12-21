@@ -37,7 +37,7 @@ load_dotenv()
 
 # Constants
 DEFAULT_MATCH_DURATION = 4500  # 1h 15m in seconds
-GAME_END_THRESHOLD = 10  # Stop match when server time is below this
+GAME_END_THRESHOLD = 5  # Stop match when server time is below this
 MESSAGE_TRUNCATE_LENGTH = 1900  # Max length for test messages
 MIN_UPDATE_INTERVAL = 5  # Minimum seconds between updates
 MAX_UPDATE_INTERVAL = 300  # Maximum seconds between updates
