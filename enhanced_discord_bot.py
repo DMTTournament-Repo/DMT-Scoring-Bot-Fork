@@ -436,7 +436,7 @@ class ClockState:
             team_a_name = self.team_names['allied']
             team_b_name = self.team_names['axis']
 
-            msg = f"🔄 {team_name} captured the point! | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+            msg = f"🔄 {team_name} captured the point!\n-----\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f}\n{team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f}"
             await self.crcon_client.send_message(msg)
         
         # IMPORTANT: Update the Discord embed immediately
@@ -724,8 +724,8 @@ async def safe_edit_message(message, **kwargs):
 def build_embed(clock: ClockState):
     """Build Discord embed with DMT Scoring"""
     embed = discord.Embed(
-        title="🏆 HLL Tank Overwatch - DMT Scoring 🏆",
-        description="**Win by highest DMT Total Score!**",
+        title="🏆 DMT Score Keeper 🏆",
+        description="",
         color=0xFFD700  # Gold color
     )
 
@@ -737,15 +737,15 @@ def build_embed(clock: ClockState):
 
     # Add server game time instead of match duration
     if game_info['game_time'] > 0:
-        embed.description += f"\n⏰ **Server Game Time:** `{clock.format_time(game_info['game_time'])}`"
+        embed.description += f"\n⏰ **Game Clock:** `{clock.format_time(game_info['game_time'])}`"
     
     # Get live status for both teams
     allies_status = clock.get_live_status('A')
     axis_status = clock.get_live_status('B')
     
     # Build team information focused on TIME CONTROL
-    allies_value = f"**Control Time:** `{clock.format_time(allies_status['total_time'])}`\n**Status:** {allies_status['status']}"
-    axis_value = f"**Control Time:** `{clock.format_time(axis_status['total_time'])}`\n**Status:** {axis_status['status']}"
+    allies_value = f"**Cap Time:** `{clock.format_time(allies_status['total_time'])}`\n**Status:** {allies_status['status']}"
+    axis_value = f"**Cap Time:** `{clock.format_time(axis_status['total_time'])}`\n**Status:** {axis_status['status']}"
     
     # Add current session info for active team
     if allies_status['is_active'] and allies_status['current_session'] > 0:
@@ -772,14 +772,14 @@ def build_embed(clock: ClockState):
     axis_scores = clock.calculate_dmt_score('axis')
 
     # Show DMT scores
-    dmt_allied = f"**DMT Score: {allied_scores['total_dmt']:,.1f}**\n"
+    dmt_allied = f"**Total: {allied_scores['total_dmt']:,.1f}**\n"
     dmt_allied += f"Combat: {allied_scores['combat_total']:,.0f} | Cap: {allied_scores['cap_score']:,.1f}"
 
-    dmt_axis = f"**DMT Score: {axis_scores['total_dmt']:,.1f}**\n"
+    dmt_axis = f"**Total: {axis_scores['total_dmt']:,.1f}**\n"
     dmt_axis += f"Combat: {axis_scores['combat_total']:,.0f} | Cap: {axis_scores['cap_score']:,.1f}"
 
-    embed.add_field(name=f"🏆 {allied_name} DMT", value=dmt_allied, inline=True)
-    embed.add_field(name=f"🏆 {axis_name} DMT", value=dmt_axis, inline=True)
+    embed.add_field(name=f"🏆 {allied_name} Score", value=dmt_allied, inline=True)
+    embed.add_field(name=f"🏆 {axis_name} Score", value=dmt_axis, inline=True)
 
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
@@ -842,14 +842,14 @@ class StartControls(discord.ui.View):
             if clock.ingame_messages:
                 team_a = clock.team_names['allied']
                 team_b = clock.team_names['axis']
-                start_msg = f"🏆 HLL Tank Overwatch: {team_a} vs {team_b} | DMT Scoring Active | Combat + Cap Time = Total Score"
+                start_msg = f"DMT Score Keeper is ACTIVE"
                 await clock.crcon_client.send_message(start_msg)
 
             await interaction.edit_original_response(content="✅ Match started with CRCON!")
         else:
             await interaction.edit_original_response(content="✅ Match started (CRCON connection failed)")
 
-    @discord.ui.button(label="🔗 Test CRCON", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label="🔗 Test CRCON Connection", style=discord.ButtonStyle.secondary)
     async def test_crcon(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer(ephemeral=True)
         
@@ -861,7 +861,7 @@ class StartControls(discord.ui.View):
                 if live_data:
                     game_state = live_data.get('game_state', {})
                     map_info = live_data.get('map_info', {})
-                    embed = discord.Embed(title="🟢 CRCON Test - SUCCESS", color=0x00ff00)
+                    embed = discord.Embed(title="🟢 CRCON Connection Test - SUCCESS", color=0x00ff00)
                     embed.add_field(name="Status", value="✅ Connected", inline=True)
                     
                     # Extract map name
@@ -877,12 +877,12 @@ class StartControls(discord.ui.View):
                     embed.add_field(name="Map", value=map_name, inline=True)
                     embed.add_field(name="Players", value=f"{game_state.get('nb_players', 0)}/100", inline=True)
                 else:
-                    embed = discord.Embed(title="🟡 CRCON Test - PARTIAL", color=0xffaa00)
-                    embed.add_field(name="Status", value="Connected but no data", inline=False)
+                    embed = discord.Embed(title="🟡 CRCON Connection Test - PARTIAL", color=0xffaa00)
+                    embed.add_field(name="Status", value="Connected but no data. Login into CRCON to establish the connection.", inline=False)
                     
         except Exception as e:
-            embed = discord.Embed(title="🔴 CRCON Test - FAILED", color=0xff0000)
-            embed.add_field(name="Error", value=str(e)[:1000], inline=False)
+            embed = discord.Embed(title="🔴 CRCON Connection Test - FAILED", color=0xff0000)
+            embed.add_field(name="Error. Login into CRCON to establish the connection.", value=str(e)[:1000], inline=False)
         
         await interaction.followup.send(embed=embed, ephemeral=True)
 
@@ -891,43 +891,43 @@ class TimerControls(discord.ui.View):
         super().__init__(timeout=None)
         self.channel_id = channel_id
 
-    @discord.ui.button(label="Allies", style=discord.ButtonStyle.success, emoji="🇺🇸")
-    async def switch_to_a(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await self._switch_team(interaction, "A")
+  #  @discord.ui.button(label="Allies", style=discord.ButtonStyle.success, emoji="🇺🇸")
+  #  async def switch_to_a(self, interaction: discord.Interaction, button: discord.ui.Button):
+   #     await self._switch_team(interaction, "A")
 
-    @discord.ui.button(label="Axis", style=discord.ButtonStyle.secondary, emoji="🇩🇪")
-    async def switch_to_b(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await self._switch_team(interaction, "B")
+  #  @discord.ui.button(label="Axis", style=discord.ButtonStyle.secondary, emoji="🇩🇪")
+  #  async def switch_to_b(self, interaction: discord.Interaction, button: discord.ui.Button):
+   #     await self._switch_team(interaction, "B")
 
-    @discord.ui.button(label="🤖 Auto", style=discord.ButtonStyle.secondary)
-    async def toggle_auto_switch(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if not user_is_admin(interaction):
-            return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
+  #  @discord.ui.button(label="🤖 Auto", style=discord.ButtonStyle.secondary)
+  #  async def toggle_auto_switch(self, interaction: discord.Interaction, button: discord.ui.Button):
+   #     if not user_is_admin(interaction):
+    #        return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
 
-        clock = clocks[self.channel_id]
-        clock.auto_switch = not clock.auto_switch
+     #   clock = clocks[self.channel_id]
+      #  clock.auto_switch = not clock.auto_switch
 
-        status = "enabled" if clock.auto_switch else "disabled"
+       # status = "enabled" if clock.auto_switch else "disabled"
 
-        await interaction.response.defer()
-        await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
+       # await interaction.response.defer()
+       # await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
 
-        if clock.crcon_client and clock.ingame_messages:
+       # if clock.crcon_client and clock.ingame_messages:
             await clock.crcon_client.send_message(f"🤖 Auto-switch {status}")
 
-    @discord.ui.button(label="💬 Msgs", style=discord.ButtonStyle.secondary)
-    async def toggle_ingame_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if not user_is_admin(interaction):
-            return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
+  #  @discord.ui.button(label="💬 Msgs", style=discord.ButtonStyle.secondary)
+   # async def toggle_ingame_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
+    #    if not user_is_admin(interaction):
+        #    return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
 
-        clock = clocks[self.channel_id]
-        clock.ingame_messages = not clock.ingame_messages
+       # clock = clocks[self.channel_id]
+     #   clock.ingame_messages = not clock.ingame_messages
 
-        status = "ON" if clock.ingame_messages else "OFF"
+      #  status = "ON" if clock.ingame_messages else "OFF"
 
-        await interaction.response.defer()
-        await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
-        await interaction.followup.send(f"💬 In-game messages: **{status}**", ephemeral=True)
+      #  await interaction.response.defer()
+      #  await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
+       # await interaction.followup.send(f"💬 In-game messages: **{status}**", ephemeral=True)
 
     @discord.ui.button(label="📊 Stats", style=discord.ButtonStyle.secondary)
     async def show_stats(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -966,25 +966,25 @@ class TimerControls(discord.ui.View):
         except Exception as e:
             await interaction.followup.send(f"❌ Error: {str(e)}", ephemeral=True)
 
-    @discord.ui.button(label="↺ Reset", style=discord.ButtonStyle.primary)
-    async def reset_timer(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if not user_is_admin(interaction):
-            return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
+  #  @discord.ui.button(label="↺ Reset", style=discord.ButtonStyle.primary)
+  #  async def reset_timer(self, interaction: discord.Interaction, button: discord.ui.Button):
+  #      if not user_is_admin(interaction):
+    #        return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
 
-        old_clock = clocks[self.channel_id]
-        if old_clock.crcon_client:
-            await old_clock.crcon_client.__aexit__(None, None, None)
+    #    old_clock = clocks[self.channel_id]
+    #    if old_clock.crcon_client:
+      #      await old_clock.crcon_client.__aexit__(None, None, None)
 
-        clocks[self.channel_id] = ClockState()
-        clock = clocks[self.channel_id]
-        view = StartControls(self.channel_id)
+     #   clocks[self.channel_id] = ClockState()
+     #   clock = clocks[self.channel_id]
+     #   view = StartControls(self.channel_id)
 
-        await interaction.response.defer()
-        embed = build_embed(clock)
-        await interaction.followup.send(embed=embed, view=view)
-        clock.message = await interaction.original_response()
+      #  await interaction.response.defer()
+     #   embed = build_embed(clock)
+    #    await interaction.followup.send(embed=embed, view=view)
+     #   clock.message = await interaction.original_response()
 
-    @discord.ui.button(label="⏹️ Stop", style=discord.ButtonStyle.danger)
+    @discord.ui.button(label="⏹️ Manually Stop", style=discord.ButtonStyle.danger)
     async def stop_timer(self, interaction: discord.Interaction, button: discord.ui.Button):
         if not user_is_admin(interaction):
             return await interaction.response.send_message("❌ Admin role required.", ephemeral=True)
@@ -1018,7 +1018,7 @@ class TimerControls(discord.ui.View):
                 winner_msg = "DRAW!"
 
             await clock.crcon_client.send_message(
-                f"🏁 MATCH COMPLETE! {winner_msg} | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+                f"🏁 MATCH COMPLETE!\n-----\n{winner_msg}\n-----\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f}\n{team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f}"
             )
 
         # Create final embed with DMT scores
@@ -1027,7 +1027,7 @@ class TimerControls(discord.ui.View):
         team_a_name = clock.team_names['allied']
         team_b_name = clock.team_names['axis']
 
-        embed = discord.Embed(title="🏁 Match Complete - DMT Results!", color=0xFFD700)
+        embed = discord.Embed(title="🏁 Match Complete - Results!", color=0xFFD700)
 
         game_info = clock.get_game_info()
         if game_info['connection_status'] == 'Connected':
@@ -1036,13 +1036,13 @@ class TimerControls(discord.ui.View):
 
         # Final DMT scores
         embed.add_field(
-            name=f"🇺🇸 {team_a_name} - Final DMT",
-            value=f"**{allied_scores['total_dmt']:,.1f} DMT**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
+            name=f"🇺🇸 {team_a_name}",
+            value=f"**Total: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
             inline=True
         )
         embed.add_field(
-            name=f"🇩🇪 {team_b_name} - Final DMT",
-            value=f"**{axis_scores['total_dmt']:,.1f} DMT**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
+            name=f"🇩🇪 {team_b_name}",
+            value=f"**Total: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
             inline=True
         )
 
@@ -1056,8 +1056,8 @@ class TimerControls(discord.ui.View):
         else:
             winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
 
-        embed.add_field(name="🎯 DMT Winner", value=winner, inline=False)
-        embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
+        embed.add_field(name="🎯 Winner", value=winner, inline=False)
+        embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
 
         await interaction.response.defer()
         await safe_edit_message(clock.message, embed=embed, view=None)
@@ -1110,7 +1110,7 @@ class TimerControls(discord.ui.View):
             team_a_name = clock.team_names['allied']
             team_b_name = clock.team_names['axis']
 
-            msg = f"⚔️ {team_name} captured the point! | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+            msg = f"⚔️ {team_name} captured the point!\n-----\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f}\n{team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f}"
             await clock.crcon_client.send_message(msg)
 
         await interaction.response.defer()
@@ -1125,7 +1125,7 @@ async def log_results(clock: ClockState, game_info: dict):
     if not results_channel:
         return
     
-    embed = discord.Embed(title="🏁 HLL Tank Overwatch Match Complete", color=0x800020)
+    embed = discord.Embed(title="🏁 Match Complete", color=0x800020)
     embed.add_field(name="🇺🇸 Allies Control Time", value=f"`{clock.format_time(clock.time_a)}`", inline=True)
     embed.add_field(name="🇩🇪 Axis Control Time", value=f"`{clock.format_time(clock.time_b)}`", inline=True)
     
@@ -1225,7 +1225,7 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
                 winner_msg = "DRAW!"
 
             await clock.crcon_client.send_message(
-                f"🏁 MATCH COMPLETE! {winner_msg} | {team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f} DMT | {team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f} DMT"
+                f"🏁 MATCH COMPLETE!\n-----\n{winner_msg}\n-----\n{team_a_name}: Combat {allied_scores['combat_total']:,.0f} + Cap {allied_scores['cap_score']:,.0f} = {allied_scores['total_dmt']:,.0f}\n{team_b_name}: Combat {axis_scores['combat_total']:,.0f} + Cap {axis_scores['cap_score']:,.0f} = {axis_scores['total_dmt']:,.0f}"
             )
 
         # Create final embed with DMT scores
@@ -1234,7 +1234,7 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
         team_a_name = clock.team_names['allied']
         team_b_name = clock.team_names['axis']
 
-        embed = discord.Embed(title="🏁 Match Complete - DMT Results!", color=0xFFD700)
+        embed = discord.Embed(title="🏁 Match Complete - Results!", color=0xFFD700)
         embed.add_field(name="🕐 End Reason", value="⏰ Game Time Expired", inline=False)
 
         if game_info['connection_status'] == 'Connected':
@@ -1243,13 +1243,13 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
 
         # Final DMT scores
         embed.add_field(
-            name=f"🇺🇸 {team_a_name} - Final DMT",
-            value=f"**{allied_scores['total_dmt']:,.1f} DMT**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
+            name=f"🇺🇸 {team_a_name}",
+            value=f"**Total: {allied_scores['total_dmt']:,.1f}**\nCombat: {allied_scores['combat_total']:,.0f}\nCap: {allied_scores['cap_score']:,.1f} ({clock.format_time(clock.time_a)})",
             inline=True
         )
         embed.add_field(
-            name=f"🇩🇪 {team_b_name} - Final DMT",
-            value=f"**{axis_scores['total_dmt']:,.1f} DMT**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
+            name=f"🇩🇪 {team_b_name}",
+            value=f"**Total: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
             inline=True
         )
 
@@ -1263,8 +1263,8 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
         else:
             winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
 
-        embed.add_field(name="🎯 DMT Winner", value=winner, inline=False)
-        embed.add_field(name="🔄 Total Switches", value=str(len(clock.switches)), inline=True)
+        embed.add_field(name="🎯 Winner", value=winner, inline=False)
+        embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
 
         # Update the message with final results
         await safe_edit_message(clock.message, embed=embed, view=None)
@@ -1282,7 +1282,7 @@ async def auto_stop_match(clock: ClockState, game_info: dict):
         logger.error(f"Error in auto_stop_match: {e}")
 
 # Bot commands
-@bot.tree.command(name="reverse_clock", description="Start the HLL Tank Overwatch time control clock")
+@bot.tree.command(name="reverse_clock", description="Start the DMT Score Keeper Bot")
 async def reverse_clock(interaction: discord.Interaction):
     channel_id = interaction.channel_id
     clocks[channel_id] = ClockState()
@@ -1290,7 +1290,7 @@ async def reverse_clock(interaction: discord.Interaction):
     embed = build_embed(clocks[channel_id])
     view = StartControls(channel_id)
 
-    await interaction.response.send_message("✅ HLL Tank Overwatch clock ready!", ephemeral=True)
+    await interaction.response.send_message("✅ DMT Score Keeper bot ready!", ephemeral=True)
     posted_message = await interaction.channel.send(embed=embed, view=view)
     clocks[channel_id].message = posted_message
 
@@ -1298,7 +1298,7 @@ async def reverse_clock(interaction: discord.Interaction):
 async def crcon_status(interaction: discord.Interaction):
     await interaction.response.defer()
 
-    embed = discord.Embed(title="🔗 CRCON Status", color=0x0099ff)
+    embed = discord.Embed(title="🔗 CRCON Connection Status", color=0x0099ff)
 
     try:
         test_client = APIKeyCRCONClient()
@@ -1650,7 +1650,7 @@ async def dmt_scores(interaction: discord.Interaction):
 
 @bot.tree.command(name="help_clock", description="Show help for the time control clock")
 async def help_clock(interaction: discord.Interaction):
-    embed = discord.Embed(title="🎯 HLL Tank Overwatch Clock Help", color=0x0099ff)
+    embed = discord.Embed(title="🎯 DMT Score Keeper Bot Help", color=0x0099ff)
     
     embed.add_field(
         name="📋 Commands",
@@ -1744,13 +1744,13 @@ async def on_ready():
     try:
         synced = await bot.tree.sync()
         logger.info(f"✅ Synced {len(synced)} slash commands")
-        print(f"🎉 HLL Tank Overwatch Clock ready! Use /reverse_clock to start")
+        print(f"🎉 DMT Score Keeper ready! Use /reverse_clock to start")
     except Exception as e:
         logger.error(f"❌ Command sync failed: {e}")
 
 # Main execution
 if __name__ == "__main__":
-    print("🚀 Starting HLL Tank Overwatch Bot...")
+    print("🚀 Starting DMT Score Keeper Bot...")
     print("📝 Version: Updated with corrected CRCON endpoints")
     
     # Check for Discord token
