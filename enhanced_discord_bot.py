@@ -798,7 +798,7 @@ def build_embed(clock: ClockState):
     auto_status = " | 🤖 Auto ON" if clock.auto_switch else " | 🤖 Auto OFF"
     msg_status = " | 💬 Msgs ON" if clock.ingame_messages else " | 💬 Msgs OFF"
 
-    footer_text = f"Match Clock by {os.getenv('BOT_AUTHOR', 'StoneyRebel')} | {connection_status}{auto_status}{msg_status}"
+    footer_text = f"Built by {os.getenv('BOT_AUTHOR', 'StoneyRebel')} | {connection_status}{auto_status}{msg_status}"
     if game_info.get('last_update'):
         footer_text += f" | Updated: {game_info['last_update']}"
     
