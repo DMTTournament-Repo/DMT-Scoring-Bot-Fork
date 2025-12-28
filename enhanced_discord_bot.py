@@ -233,7 +233,7 @@ class ClockState:
         # DMT Scoring (always enabled)
         self.tournament_mode = True  # Always use DMT scoring
         self.team_names = {'allied': 'Allies', 'axis': 'Axis'}
-        self.ingame_messages = True  # Toggle for sending messages to players in-game
+        self.ingame_messages = False  # Toggle for sending messages to players in-game
         # Squad mapping: which squads represent which crews
         self.squad_config = {
             'allied': {
