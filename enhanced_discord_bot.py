@@ -944,7 +944,7 @@ class TimerControls(discord.ui.View):
             embed = discord.Embed(title="📊 Live Match Stats", color=0x00ff00)
             embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
             embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
-            embed.add_field(name="🔄 Point Switches", value=str(len(clock.switches)), inline=True)
+            embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
             
             # Control time breakdown
             allies_time = clock.total_time('A')
@@ -1146,7 +1146,7 @@ async def log_results(clock: ClockState, game_info: dict):
     if game_info['connection_status'] == 'Connected':
         embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
     
-    embed.add_field(name="🔄 Switches", value=str(len(clock.switches)), inline=True)
+    embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
     embed.timestamp = datetime.datetime.now(timezone.utc)
     
     await results_channel.send(embed=embed)
