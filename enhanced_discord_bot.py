@@ -744,8 +744,8 @@ def build_embed(clock: ClockState):
     axis_status = clock.get_live_status('B')
     
     # Build team information focused on TIME CONTROL
-    allies_value = f"**Cap Time:** `{clock.format_time(allies_status['total_time'])}`\n**Status:** {allies_status['status']}"
-    axis_value = f"**Cap Time:** `{clock.format_time(axis_status['total_time'])}`\n**Status:** {axis_status['status']}"
+    allies_value = f"**Total Cap Time:** `{clock.format_time(allies_status['total_time'])}`\n**Status:** {allies_status['status']}"
+    axis_value = f"**Total Cap Time:** `{clock.format_time(axis_status['total_time'])}`\n**Status:** {axis_status['status']}"
     
     # Add current session info for active team
     if allies_status['is_active'] and allies_status['current_session'] > 0:
@@ -764,8 +764,8 @@ def build_embed(clock: ClockState):
     allied_name = clock.team_names.get('allied', 'Allies')
     axis_name = clock.team_names.get('axis', 'Axis')
 
-    embed.add_field(name=f"🇺🇸 {allied_name}", value=allies_value, inline=False)
-    embed.add_field(name=f"🇩🇪 {axis_name}", value=axis_value, inline=False)
+    embed.add_field(name=f"🇺🇸 {allied_name} - Cap Time", value=allies_value, inline=False)
+    embed.add_field(name=f"🇩🇪 {axis_name} - Cap Time", value=axis_value, inline=False)
 
     # Calculate and show DMT scores
     allied_scores = clock.calculate_dmt_score('allied')
@@ -778,8 +778,8 @@ def build_embed(clock: ClockState):
     dmt_axis = f"**Total: {axis_scores['total_dmt']:,.1f}**\n"
     dmt_axis += f"Combat: {axis_scores['combat_total']:,.0f} | Cap: {axis_scores['cap_score']:,.1f}"
 
-    embed.add_field(name=f"🏆 {allied_name} Score", value=dmt_allied, inline=True)
-    embed.add_field(name=f"🏆 {axis_name} Score", value=dmt_axis, inline=True)
+    embed.add_field(name=f"🏆 {allied_name} - Score", value=dmt_allied, inline=True)
+    embed.add_field(name=f"🏆 {axis_name} - Score", value=dmt_axis, inline=True)
 
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
