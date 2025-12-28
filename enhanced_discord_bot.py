@@ -913,7 +913,7 @@ class TimerControls(discord.ui.View):
        # await safe_edit_message(clock.message, embed=build_embed(clock), view=self)
 
        # if clock.crcon_client and clock.ingame_messages:
-            await clock.crcon_client.send_message(f"🤖 Auto-switch {status}")
+       #     await clock.crcon_client.send_message(f"🤖 Auto-switch {status}")
 
   #  @discord.ui.button(label="💬 Msgs", style=discord.ButtonStyle.secondary)
    # async def toggle_ingame_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
