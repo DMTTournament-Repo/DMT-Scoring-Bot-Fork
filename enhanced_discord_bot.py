@@ -1036,8 +1036,7 @@ class TimerControls(discord.ui.View):
         game_info = clock.get_game_info()
         if game_info['connection_status'] == 'Connected':
             embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
-            embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
-            embed.add_field(f"-----", value="", inline=False)
+            embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=False)
 
         # Final DMT scores
         embed.add_field(
@@ -1048,7 +1047,7 @@ class TimerControls(discord.ui.View):
         embed.add_field(
             name=f"🇩🇪 {team_b_name}",
             value=f"**Total: {axis_scores['total_dmt']:,.1f}**\nCombat: {axis_scores['combat_total']:,.0f}\nCap: {axis_scores['cap_score']:,.1f} ({clock.format_time(clock.time_b)})",
-            inline=True
+            inline=False
         )
 
         # Determine winner by DMT score
