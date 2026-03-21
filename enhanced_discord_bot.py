@@ -763,7 +763,8 @@ def build_embed(clock: ClockState):
     # Get team names
     allied_name = clock.team_names.get('allied', 'Allies')
     axis_name = clock.team_names.get('axis', 'Axis')
-
+    
+    embed.add_field(name=f"-----",value="", inlince=False)
     embed.add_field(name=f"__CAP TIME__", value="", inline=False)
     embed.add_field(name=f"🇺🇸 {allied_name} - Cap Time", value=allies_value, inline=False)
     embed.add_field(name=f"🇩🇪 {axis_name} - Cap Time", value=axis_value, inline=False)
