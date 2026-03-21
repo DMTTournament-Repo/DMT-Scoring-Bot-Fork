@@ -679,7 +679,7 @@ class ClockState:
                 crew_scores.append(highest_score)
 
         # Calculate combat total: 3 × (sum of all squad highs) + commander
-        combat_total = 3 * sum(crew_scores + commander_score)
+        combat_total = 3 * sum(crew_scores) + 3 * commander_score
 
         # Debug logging to help diagnose score issues
         logger.debug(f"DMT Calc [{team_key}]: {len(crew_scores)} squads found, highs={crew_scores}, commander={commander_score}, combat_total={combat_total}")
