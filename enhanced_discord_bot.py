@@ -1060,7 +1060,7 @@ class TimerControls(discord.ui.View):
             winner = f"🏆 **{team_b_name} Victory**\n*Won by {dmt_diff:,.1f} Points*"
         else:
             winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
-        embed.add_field(f"-----", value="", inline=False)
+       
         embed.add_field(name="🎯 Winner", value=winner, inline=False)
         embed.add_field(f"-----", value="", inline=False)
         embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
