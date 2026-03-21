@@ -764,8 +764,11 @@ def build_embed(clock: ClockState):
     allied_name = clock.team_names.get('allied', 'Allies')
     axis_name = clock.team_names.get('axis', 'Axis')
 
-    embed.add_field(name=f"🇺🇸 {allied_name} - Cap Time", value=allies_value, inline=True)
-    embed.add_field(name=f"🇩🇪 {axis_name} - Cap Time", value=axis_value, inline=True)
+    embed.add_field(name=f"", value="__CAP TIME__", inline=False)
+    embed.add_field(name=f"🇺🇸 {allied_name} - Cap Time", value=allies_value, inline=False)
+    embed.add_field(name=f"🇩🇪 {axis_name} - Cap Time", value=axis_value, inline=False)
+
+    embed.add_field(name=f"-----", value="__TOTAL SCORE__", inline=false)
 
     # Calculate and show DMT scores
     allied_scores = clock.calculate_dmt_score('allied')
@@ -778,8 +781,8 @@ def build_embed(clock: ClockState):
     dmt_axis = f"**Total: {axis_scores['total_dmt']:,.1f}**\n"
     dmt_axis += f"Combat: {axis_scores['combat_total']:,.0f} | Cap: {axis_scores['cap_score']:,.1f}"
 
-    embed.add_field(name=f"🏆 {allied_name} - Score", value=dmt_allied, inline=True)
-    embed.add_field(name=f"🏆 {axis_name} - Score", value=dmt_axis, inline=True)
+    embed.add_field(name=f"🏆 {allied_name} - Score", value=dmt_allied, inline=False)
+    embed.add_field(name=f"🏆 {axis_name} - Score", value=dmt_axis, inline=False)
 
     # Show leader
     if allied_scores['total_dmt'] > axis_scores['total_dmt']:
