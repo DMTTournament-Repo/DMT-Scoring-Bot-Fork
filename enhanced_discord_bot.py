@@ -1037,6 +1037,7 @@ class TimerControls(discord.ui.View):
         if game_info['connection_status'] == 'Connected':
             embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
             embed.add_field(name="👥 Players", value=f"{game_info['players']}/100", inline=True)
+            embed.add_field(f"-----", value="", inline=False)
 
         # Final DMT scores
         embed.add_field(
@@ -1059,7 +1060,6 @@ class TimerControls(discord.ui.View):
             winner = f"🏆 **{team_b_name} Victory**\n*Won by {dmt_diff:,.1f} Points*"
         else:
             winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
-
         embed.add_field(f"-----", value="", inline=False)
         embed.add_field(name="🎯 Winner", value=winner, inline=False)
         embed.add_field(f"-----", value="", inline=False)
