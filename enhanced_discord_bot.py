@@ -37,10 +37,10 @@ load_dotenv()
 
 # Constants
 DEFAULT_MATCH_DURATION = 4500  # 1h 15m in seconds
-GAME_END_THRESHOLD = 15  # Stop match when server time is below this
+GAME_END_THRESHOLD = 20  # Stop match when server time is below this
 MESSAGE_TRUNCATE_LENGTH = 1900  # Max length for test messages
 MIN_UPDATE_INTERVAL = 5  # Minimum seconds between updates
-MAX_UPDATE_INTERVAL = 30  # Maximum seconds between updates
+MAX_UPDATE_INTERVAL = 60  # Maximum seconds between updates
 
 intents = discord.Intents.default()
 intents.message_content = False
@@ -1061,7 +1061,6 @@ class TimerControls(discord.ui.View):
             winner = "🤝 **Perfect Draw**\n*Equal DMT scores*"
        
         embed.add_field(name="🎯 Winner", value=winner, inline=False)
-        embed.add_field(f"-----", value="", inline=False)
         embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
 
         await interaction.response.defer()
