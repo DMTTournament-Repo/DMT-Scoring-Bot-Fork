@@ -37,10 +37,10 @@ load_dotenv()
 
 # Constants
 DEFAULT_MATCH_DURATION = 4500  # 1h 15m in seconds
-GAME_END_THRESHOLD = 20  # Stop match when server time is below this
+GAME_END_THRESHOLD = 30  # Stop match when server time is below this
 MESSAGE_TRUNCATE_LENGTH = 1900  # Max length for test messages
 MIN_UPDATE_INTERVAL = 5  # Minimum seconds between updates
-MAX_UPDATE_INTERVAL = 60  # Maximum seconds between updates
+MAX_UPDATE_INTERVAL = 300  # Maximum seconds between updates
 
 intents = discord.Intents.default()
 intents.message_content = False
@@ -1144,14 +1144,12 @@ async def log_results(clock: ClockState, game_info: dict):
         winner = "🤝 Draw"
         advantage = "0:00:00"
 
-    embed.add_field(f"-----", value="", inline=False)
     embed.add_field(name="Winner", value=winner, inline=True)
     embed.add_field(name="Advantage", value=f"`+{advantage}`", inline=True)
     
     if game_info['connection_status'] == 'Connected':
         embed.add_field(name="🗺️ Map", value=game_info['map'], inline=True)
         
-    embed.add_field(f"-----", value="", inline=False)
     embed.add_field(name="🔄 Total Cap Switches", value=str(len(clock.switches)), inline=True)
     embed.timestamp = datetime.datetime.now(timezone.utc)
     
